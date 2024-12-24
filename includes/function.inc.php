@@ -46,4 +46,12 @@ function userExist($conn, $username, $email)
 {
   $sql = "SELECT * users WHERE username = ? OR email = ?;";
   $stmt = mysqli_stmt_init($conn);
+
+  if (!mysqli_stmt_prepare($stmt, $sql)) {
+    header('location: ../signup.php?error=stmtfailed');
+    exit();
+  }
+
+  mysqli_stmt_bind_param($stmt, "ss", $username, $email);
+  mysqli_stmt_execute($stmt);
 }
